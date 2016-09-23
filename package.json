@@ -1,0 +1,28 @@
+{
+  "name": "screeps-submodules",
+  "version": "1.0.1",
+  "description": "A Gulp plugin for commiting code with submodules to your Screeps account",
+  "readme": "README.md",
+  "license": "MIT",
+  "repository": "git://github.com/harmo/gulp-screeps-submodules.git",
+  "author": {
+    "name": "David Talagrand",
+    "email": "dtharmo@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/harmo/gulp-screeps-submodules/issues",
+    "email": "dtharmo@gmail.com"
+  },
+  "homepage": "https://github.com/harmo/gulp-screeps-submodules",
+  "main": "dist/main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-screeps": "^1.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
