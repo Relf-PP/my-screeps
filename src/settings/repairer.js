@@ -1,7 +1,7 @@
 'use strict';
 
 var repairer_settings = {
-    priority: 3,
+    priority: 1,
     min: 1,
     total: 0,
     minExtensions: 0,

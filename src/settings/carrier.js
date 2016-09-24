@@ -1,7 +1,7 @@
 'use strict';
 
 var carrier_settings = {
-    priority: 1,
+    priority: 7,
     min: 1,
     total: 0,
     minExtensions: 0,

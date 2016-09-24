@@ -1,7 +1,7 @@
 'use strict';
 
 var miner_settings = {
-    priority: 0,
+    priority: 10,
     min: 2,
     total: 0,
     minExtensions: 0,

@@ -1,11 +1,11 @@
 'use strict';
 
 var upgrader_settings = {
-    priority: 2,
+    priority: 9,
     min: 1,
     total: 0,
     minExtensions: 0,
-    minPopulation: 10,
+    minPopulation: 4,
     finalStats: [CARRY, WORK],
     levels: [{
         level: 1,

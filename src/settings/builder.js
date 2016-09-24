@@ -1,7 +1,7 @@
 'use strict';
 
 var builder_settings = {
-    priority: .2,
+    priority: 8,
     min: 1,
     total: 0,
     minExtensions: 0,
