@@ -194,6 +194,10 @@ class Carrier extends AbstractCreep {
 
     isMyContainerAlmostEmpty(){
         var containers = this.StockManager.containers;
+        if(containers.stocks.length == 0){
+            return true;
+        }
+
         var energy = containers.getEnergy(this.myContainer);
         var energyCapacity = containers.getEnergyCapacity(this.myContainer);
         return energy < this.creep.energyCapacity;

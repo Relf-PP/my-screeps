@@ -63,12 +63,23 @@ class RoomPopulation {
     }
 
     getRole(role){
-        return Cache.remember(
-            'population-role-' + role,
-            () => {
-                return this.distribution[role];
+        return this.distribution[role];
+        // return Cache.remember(
+        //     'population-role-' + role,
+        //     () => {
+        //         return this.distribution[role];
+        //     }
+        // )
+    }
+
+    getCreepsForRole(role){
+        var creeps = [];
+        for (var c in this.creeps){
+            if (Helpers.isCreepA(this.creeps[c], role)){
+                creeps.push(this.creeps[c]);
             }
-        )
+        }
+        return creeps;
     }
 
     checkIfRoleExists(role, creep){
@@ -146,6 +157,75 @@ class RoomPopulation {
             this.distribution.repairer.max +
             this.distribution.upgrader.max
         );
+    }
+
+    getSpawnableRole(){
+        var eligible = {};
+
+        for(var role in this.distribution){
+            var creepType = this.distribution[role];
+
+            if(this.enoughPopulationForRole(creepType)){
+                // Log('Enough pop for ' + role);
+                continue;
+            }
+
+            if(this.moreThanMaxRole(creepType)){
+                // Log('More than max ' + role);
+                continue;
+            }
+
+            if(this.enoughOfMinRole(role)){
+                // Log('Enough of min ' + role);
+                continue;
+            }
+
+            eligible[role] = creepType;
+        }
+
+        // TODO Resolve too much carriers
+        var maxPriority = 0;
+        var eligibleRole = false;
+        for(role in eligible){
+            if(eligible[role].priority > maxPriority || !eligibleRole){
+                maxPriority = eligible[role].priority;
+                eligibleRole = role;
+            }
+        }
+
+        return eligibleRole;
+    }
+
+    enoughPopulationForRole(role){
+        return this.getTotal() < role.minPopulation;
+    }
+
+    moreThanMaxRole(role){
+        return role.total >= role.max;
+    }
+
+    enoughOfMinRole(role){
+        return role.min > this.getRole(role).length;
+    }
+
+    getBestSpawnable(role){
+        var data = this.distribution[role];
+        var maxEnergy = this.myRoom.energyForSpawn;
+        var bestLevel = null;
+
+        if(this.getTotal() < Object.keys(this.distribution).length){
+            bestLevel = data.levels[0];
+        }
+        else {
+            throw('Higher levels not implemented !');
+            // TODO Higher levels :
+            // get the best level for maxEnergy
+        }
+
+        // TODO
+        // Increase distribution level
+
+        return bestLevel;
     }
 }
 

@@ -14,6 +14,7 @@ class MyRoom {
         this.creeps = this.getCreeps();
         this.myCreeps = [];
         this.StockManager = new StockManager(room);
+        this.energyForSpawn = this.StockManager.getEnergyForSpawn();
         this.SourceManager = new SourceManager(room);
         this.Population = new RoomPopulation(this, this.creeps);
         this.Population.setPopulationLevels();
@@ -46,6 +47,15 @@ class MyRoom {
             catch(error) {
                 Log('Error during loading creep: ' + error, 'error');
                 game_manager.notify(error);
+            }
+        }
+    }
+
+    createCreeps(){
+        for(var s in this.StockManager.spawns.stocks){
+            var spawn = this.StockManager.spawns.stocks[s];
+            if(spawn != undefined && !spawn.spawning){
+                this.CreepFactory.createCreep(spawn);
             }
         }
     }

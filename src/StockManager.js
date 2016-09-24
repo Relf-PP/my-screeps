@@ -64,6 +64,10 @@ class StockManager {
         this.energyCapacity += my_storages.energyCapacity;
         return my_storages;
     }
+
+    getEnergyForSpawn(){
+        return this.spawns.energy + this.extensions.energy;
+    }
 }
 
 module.exports.StockManager = StockManager;

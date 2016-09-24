@@ -15,8 +15,6 @@ class RoomManager {
         for(var name in this.rooms){
             var room = this.rooms[name];
 
-            room.loadCreeps();
-
             Log('-------------------------------------------------------\n' +
                 name + ' - ' +
                 '⚉ ' + room.Population.getTotal() +
@@ -35,6 +33,9 @@ class RoomManager {
                 '/' + room.StockManager.energyCapacity +
                 ' ❖ ' + room.SourceManager.energy +
                 '\n-------------------------------------------------------');
+
+            room.loadCreeps();
+            room.createCreeps();
         }
     }
 }
