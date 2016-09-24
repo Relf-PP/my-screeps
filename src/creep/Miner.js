@@ -92,9 +92,10 @@ class Miner extends AbstractCreep {
 
     initMyContainer(){
         if(!this.remember('MyContainer')){
-            var containers = this.StockManager.containers;
+            var containers = this.StockManager.containers.stocks;
             for(var c in containers){
                 var container = Game.getObjectById(containers[c].id);
+                Log(this.creep.pos.getRangeTo(container));
                 if(this.creep.pos.isNearTo(container)){
                     this.remember('MyContainer', containers[c]);
                 }
