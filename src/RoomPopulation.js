@@ -115,11 +115,11 @@ class RoomPopulation {
     }
 
     getMaxBuilders(){
-        if(this.getTotal() < 10){
+        if(this.getTotal() < 6){
             return 0;
         }
 
-        if(this.getTotal() >= 10 && this.getTotal() < 20){
+        if(this.getTotal() >= 6 && this.getTotal() < 20){
             return 1;
         }
 
@@ -166,24 +166,23 @@ class RoomPopulation {
             var creepType = this.distribution[role];
 
             if(this.enoughPopulationForRole(creepType)){
-                // Log('Enough pop for ' + role);
+                // Log('Not enough population for spawn ' + role);
                 continue;
             }
 
             if(this.moreThanMaxRole(creepType)){
-                // Log('More than max ' + role);
+                // Log('There is enough than max ' + role);
                 continue;
             }
 
             if(this.enoughOfMinRole(role)){
-                // Log('Enough of min ' + role);
+                // Log('There is enough than min ' + role);
                 continue;
             }
 
             eligible[role] = creepType;
         }
 
-        // TODO Resolve too much carriers
         var maxPriority = 0;
         var eligibleRole = false;
         for(role in eligible){
@@ -206,26 +205,6 @@ class RoomPopulation {
 
     enoughOfMinRole(role){
         return role.min > this.getRole(role).length;
-    }
-
-    getBestSpawnable(role){
-        var data = this.distribution[role];
-        var maxEnergy = this.myRoom.energyForSpawn;
-        var bestLevel = null;
-
-        if(this.getTotal() < Object.keys(this.distribution).length){
-            bestLevel = data.levels[0];
-        }
-        else {
-            throw('Higher levels not implemented !');
-            // TODO Higher levels :
-            // get the best level for maxEnergy
-        }
-
-        // TODO
-        // Increase distribution level
-
-        return bestLevel;
     }
 }
 

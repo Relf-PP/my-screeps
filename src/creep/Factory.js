@@ -78,21 +78,47 @@ class Factory {
 
     createCreep(spawn){
         var spawnableRole = this.population.getSpawnableRole();
-        Log(spawnableRole)
         if(spawnableRole){
-            var creepBody = this.population.getBestSpawnable(spawnableRole);
-            var abilities = creepBody.abilities;
-            var creepName = this.getNewCreepName(spawnableRole);
-            if(spawn.canCreateCreep(abilities, creepName) == OK){
-                spawn.createCreep(abilities, creepName, {role: spawnableRole});
-                Log('❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱');
-                Log('❱❱❱❱❱❱❱❱ Spawning: ' + creepName);
-                Log('❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱');
+            try {
+                var creepBody = this.getBestSpawnable(spawnableRole);
+                var abilities = creepBody.abilities;
+                var creepName = this.getNewCreepName(spawnableRole);
+                if(spawn.canCreateCreep(abilities, creepName) == OK){
+                    spawn.createCreep(abilities, creepName, {role: spawnableRole});
+                    Log('❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱');
+                    Log('❱❱❱❱❱❱❱❱ Spawning: ' + creepName);
+                    Log('❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱❱');
+                }
+                else {
+                    throw('Spawn ' + spawn.name + ' can\'t create ' + creepName);
+                }
             }
-            else {
-                throw('Spawn ' + spawn.name + ' can\'t create ' + creepName);
+            catch(error){
+                Log(error, 'error');
             }
         }
+    }
+
+    getBestSpawnable(role){
+        var maxEnergy = this.myRoom.energyForSpawn;
+        var bestIndex = 1;
+        var bestLevel = this.levels[role][bestIndex];
+
+        for(var i in this.levels[role]){
+            if(this.levels[role][i].cost > maxEnergy){
+                break;
+            }
+            bestLevel = this.levels[role][i];
+            bestIndex = i;
+        }
+
+        if(bestIndex == this.levels[role].length){
+            Log(bestLevel);
+            Log(bestLevel.cost);
+            Log(maxEnergy)
+        }
+
+        return bestLevel;
     }
 
     getNewCreepName(role){
