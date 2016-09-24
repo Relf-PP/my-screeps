@@ -9,6 +9,7 @@ class Carrier extends AbstractCreep {
 
         this.myMinerCreep = this.assignMyMinerCreep();
         this.myDepositCreep = this.assignMyDepositCreep();
+        this.myContainer = this.assignMyContainer();
 
         this.spawns = this.StockManager.spawns;
         this.spawn = this.StockManager.getSpawnById(this.mySpawn.id);
@@ -34,16 +35,40 @@ class Carrier extends AbstractCreep {
     }
 
     gatherEnergy(){
+        if(!this.isMyContainerAlmostEmpty()){
+            this.gatherEnergyFromMyContainer();
+        }
+        else {
+            this.gatherEnergyFromMyMiner();
+        }
+    }
+
+    gatherEnergyFromMyContainer(){
+        if(this.myContainer){
+            var container = Game.getObjectById(this.myContainer.id);
+            if(this.creep.pos.isNearTo(container)){
+                this.stopMoving();
+                container.transfer(this.creep, RESOURCE_ENERGY);
+            }
+            else {
+                this.startMoving();
+                this.creep.moveTo(container);
+            }
+        }
+        else {
+            throw(this.name + ': No container available !');
+        }
+    }
+
+    gatherEnergyFromMyMiner(){
         var myMinerCreep = Game.getObjectById(this.myMinerCreep.id);
         if(this.creep.pos.isNearTo(myMinerCreep)){
             this.stopMoving();
             myMinerCreep.transfer(this.creep, RESOURCE_ENERGY);
-            return true;
         }
 
         this.startMoving();
         this.creep.moveTo(myMinerCreep);
-        return false
     }
 
     depositEnergy(){
@@ -62,7 +87,7 @@ class Carrier extends AbstractCreep {
         }
 
         if(continueAction){
-            throw(this.name + ': I have nothing to do !');
+            // TODO other targets
         }
     }
 
@@ -107,6 +132,10 @@ class Carrier extends AbstractCreep {
     }
 
     depositEnergyToMyDepositCreep(){
+        if(this.myDepositCreep == undefined){
+            return true;
+        }
+
         let action;
         var myDepositCreep = Game.getObjectById(this.myDepositCreep.id);
 
@@ -120,6 +149,19 @@ class Carrier extends AbstractCreep {
         }
 
         return action < OK;
+    }
+
+    assignMyContainer(){
+        if(!this.remember('MyContainer')){
+            var containers = this.StockManager.containers.stocks;
+            for(var c in containers){
+                var container = Game.getObjectById(containers[c].id);
+                this.remember('MyContainer', containers[c]);
+                break;
+            }
+        }
+
+        return this.remember('MyContainer');
     }
 
     assignMyMinerCreep(){
@@ -148,6 +190,13 @@ class Carrier extends AbstractCreep {
         }
 
         return this.remember('myDepositCreep');
+    }
+
+    isMyContainerAlmostEmpty(){
+        var containers = this.StockManager.containers;
+        var energy = containers.getEnergy(this.myContainer);
+        var energyCapacity = containers.getEnergyCapacity(this.myContainer);
+        return energy < this.creep.energyCapacity;
     }
 }
 
