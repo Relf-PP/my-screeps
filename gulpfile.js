@@ -24,11 +24,6 @@ gulp.task('screeps', function() {
         .pipe(livereload())
 });
 
-
-gulp.task('submodules', function() {
-});
-
-
 gulp.task('default', function() {
     livereload.listen();
     gulp.watch(['src/*.js','src/**/*.js'], ['screeps']);
