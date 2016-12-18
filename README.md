@@ -1,4 +1,7 @@
-# gulp-screeps-submodules
+# My screeps AI
+Scripts to run my AI for the [Screeps](https://screeps.com/) game.
+
+## gulp-screeps-submodules
 
 A Gulp plugin for commiting code and submodules to your Screeps account.
 
